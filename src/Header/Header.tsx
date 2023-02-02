@@ -5,26 +5,27 @@ import Styled from "./Header.module.scss";
 
 const Header = () => {
   return (
-    <Navbar bg="dark" variant="dark" collapseOnSelect expand="lg">
+    <Navbar bg="dark" variant="dark" collapseOnSelect expand="md" fixed="top">
       <Container>
-        <Navbar.Brand href="#home">NicommentArchives</Navbar.Brand>
+        <LinkContainer to="/">
+          <Navbar.Brand className={Styled.brandName}>
+            ニコ動コメントアーカイブス
+          </Navbar.Brand>
+        </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <LinkContainer to="/">
-              <Nav.Link>Main</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/about">
-              <Nav.Link>About</Nav.Link>
-            </LinkContainer>
             <LinkContainer to="/list">
-              <Nav.Link>List</Nav.Link>
+              <Nav.Link>動画一覧</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/progress">
-              <Nav.Link>Progress</Nav.Link>
+            <LinkContainer to="/reserve">
+              <Nav.Link>予約一覧</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/stats">
+              <Nav.Link>処理状況</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/add">
-              <Nav.Link>Add</Nav.Link>
+              <Nav.Link>追加</Nav.Link>
             </LinkContainer>
           </Nav>
         </Navbar.Collapse>
