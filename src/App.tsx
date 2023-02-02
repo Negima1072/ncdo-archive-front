@@ -3,6 +3,7 @@ import Layout from "Layout/Layout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "pages/MainPage/MainPage";
 import VideoListPage from "pages/VideoListPage/VideoListPage";
+import AddPage from "pages/AddPage/AddPage";
 
 const NotFount = () => {
   return (
