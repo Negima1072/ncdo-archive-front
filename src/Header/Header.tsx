@@ -15,6 +15,9 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
+            <LinkContainer to="/">
+              <Nav.Link>ホーム</Nav.Link>
+            </LinkContainer>
             <LinkContainer to="/list">
               <Nav.Link>動画一覧</Nav.Link>
             </LinkContainer>

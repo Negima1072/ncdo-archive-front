@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "Layout/Layout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "pages/MainPage/MainPage";
+import VideoListPage from "pages/VideoListPage/VideoListPage";
 
 const NotFount = () => {
   return (
@@ -18,6 +19,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<MainPage />} />
+          <Route path="/list" element={<VideoListPage />} />
+          <Route path="/add" element={<AddPage />} />
           <Route path="/*" element={<NotFount />} />
         </Route>
       </Routes>

@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import { Table } from "react-bootstrap";
 
 const sampleProgress = [
@@ -58,7 +58,7 @@ const ProgressList = () => {
         ))}
       </tbody>
     </Table>
-  )
-}
+  );
+};
 
 export default ProgressList;

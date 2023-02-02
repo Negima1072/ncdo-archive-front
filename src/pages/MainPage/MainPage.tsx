@@ -1,12 +1,12 @@
 import ProgressList from "components/ProgressList";
 import React from "react";
-import { Card } from "react-bootstrap";
+import { Card, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Styled from "./MainPage.module.scss";
 
 const MainPage = () => {
   return (
-    <>
+    <Container>
       <Card className={Styled.mainCard}>
         <Card.Header>
           <h4 className={Styled.cardTitle}>このサイトについて</h4>
@@ -82,7 +82,7 @@ const MainPage = () => {
           </Card.Text>
         </Card.Body>
       </Card>
-    </>
+    </Container>
   );
 };
 

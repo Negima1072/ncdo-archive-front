@@ -1,0 +1,25 @@
+.videoTable{
+  width: 100%;
+  min-height: 452px;
+}
+
+.pageButton{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
+}
+
+.searchCnt {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px;
+  p {
+    margin: 0;
+  }
+}
+
+.searchInput {
+  width: 40%;
+  margin-left: auto;
+}
