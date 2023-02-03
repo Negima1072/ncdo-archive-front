@@ -1,4 +1,6 @@
 import ProgressList from "components/ProgressList";
+import ReserveList from "components/ReserveList";
+import VideoList from "components/VideoList";
 import React from "react";
 import { Card, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -42,7 +44,7 @@ const MainPage = () => {
           <Link to="/list">すべて見る</Link>
         </Card.Header>
         <Card.Body className={Styled.tableCard}>
-          <ProgressList />
+          <VideoList />
         </Card.Body>
       </Card>
       <Card className={Styled.mainCard}>
@@ -51,7 +53,7 @@ const MainPage = () => {
           <Link to="/reserve">すべて見る</Link>
         </Card.Header>
         <Card.Body className={Styled.tableCard}>
-          <ProgressList />
+          <ReserveList />
         </Card.Body>
       </Card>
       <Card className={Styled.mainCard}>

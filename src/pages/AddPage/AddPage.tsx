@@ -9,10 +9,25 @@ const AddPage = () => {
   const [kiyakuModalShow, setKiyakuModalShow] = useState(false);
   const [searchParams] = useSearchParams();
   const [errorMes, setErrorMes] = useState("");
+  const [nowReserveCount, setNowReserveCount] = useState(0);
   const navigater = useNavigate();
   useEffect(() => {
     (async () => {
-      if (searchParams.has("videoType") || searchParams.has("videoId")){
+      try {
+        const res = await fetch(
+          `https://api.ncdo.net/v1/archive/list?status=0&pageSize=3&page=1`
+        );
+        if (res.status === 200) {
+          const resJson = await res.json();
+          if (resJson.meta.status === 200) {
+            setNowReserveCount(resJson.data.totalCount);
+          }
+        }
+      } catch (error) {
+        setErrorMes("エラーが発生しました。時間を開けてやり直してください。");
+        return;
+      }
+      if (searchParams.has("videoType") || searchParams.has("videoId")) {
         if (!searchParams.has("videoType") || !searchParams.has("videoId")) {
           setErrorMes("パラメーターが不適切です。再度やり直してください。");
           return;
@@ -76,7 +91,7 @@ const AddPage = () => {
         <br />
         削除動画は新米鯖移行後に削除された動画のみ取得できます。
         <br />
-        現在の追加待ち動画数は{1}件です。
+        現在の追加待ち動画数は{nowReserveCount}件です。
       </p>
       {errorMes !== "" && <Alert variant="danger">{errorMes}</Alert>}
       <Form>

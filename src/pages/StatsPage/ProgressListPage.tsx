@@ -15,9 +15,9 @@ import {
   Table,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Styled from "./VideoListPage.module.scss";
+import Styled from "./ProgressListPage.module.scss";
 
-const COLUMNS: ColumnDef<VideoData>[] = [
+const COLUMNS: ColumnDef<ProgressData>[] = [
   {
     header: "#",
     accessorKey: "id",
@@ -36,19 +36,21 @@ const COLUMNS: ColumnDef<VideoData>[] = [
   },
   {
     header: "コメント数",
-    accessorKey: "commentNum",
+    accessorFn: (r) => {
+      return `${r.comment.now}/${r.comment.total}`;
+    },
   },
   {
-    header: "更新日時",
-    accessorKey: "updatedAt",
+    header: "登録日時",
+    accessorKey: "requestedAt",
   },
 ];
 
-const VideoListPage = () => {
+const ProgressListPage = () => {
   const columns = useMemo(() => COLUMNS, []);
-  const [videos, setVideos] = useState<VideoData[]>([]);
+  const [videos, setVideos] = useState<ProgressData[]>([]);
   const [totalSize, setTotalSize] = useState<number>(0);
-  const table = useReactTable<VideoData>({
+  const table = useReactTable<ProgressData>({
     data: videos,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
@@ -64,13 +66,16 @@ const VideoListPage = () => {
         if (resJson.meta.status === 200) {
           setTotalSize(resJson.data.totalCount);
           setVideos(
-            resJson.data.items.map((v: ListItem): VideoData => {
+            resJson.data.items.map((v: ListItem): ProgressData => {
               return {
                 id: v.id,
                 title: v.videoTitle ?? v.videoId,
                 videoId: v.videoId,
-                commentNum: v.count.totalComment,
-                updatedAt: v.updatedAt ?? "",
+                requestedAt: v.requestedAt,
+                comment: {
+                  now: v.count.nowComment,
+                  total: v.count.totalComment,
+                },
               };
             })
           );
@@ -80,9 +85,9 @@ const VideoListPage = () => {
   }, []);
   return (
     <>
-      <h2>動画一覧</h2>
+      <h2>処理中一覧</h2>
       <Container className={Styled.searchCnt}>
-        <p>総動画数: {totalSize}</p>
+        <p>処理中動画数: {totalSize}</p>
         <InputGroup size="sm" className={Styled.searchInput}>
           <Form.Control type="text" />
           <Button variant="dark" type="submit">
@@ -174,4 +179,4 @@ const VideoListPage = () => {
   );
 };
 
-export default VideoListPage;
+export default ProgressListPage;
