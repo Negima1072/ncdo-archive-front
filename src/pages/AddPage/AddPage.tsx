@@ -12,49 +12,58 @@ const AddPage = () => {
   const navigater = useNavigate();
   useEffect(() => {
     (async () => {
-      if (!searchParams.has("videoType") || !searchParams.has("videoId")) {
-        setErrorMes("パラメーターが不適切です。再度やり直してください。");
-        return;
-      }
-      const videoQueryType = searchParams.get("videoType");
-      if (videoQueryType !== "normal" && videoQueryType !== "deleted") {
-        setErrorMes("パラメーターが不適切です。再度やり直してください。");
-        return;
-      }
-      try {
-        const res = await fetch("https://api.ncdo.net/v1/archive/add", {
-          method: "post",
-          mode: "cors",
-          body: JSON.stringify({
-            videoType: videoQueryType,
-            videoId: searchParams.get("videoId"),
-            videoTitle: searchParams.get("videoTitle"),
-            userId: searchParams.get("userId"),
-            count: {
-              view: searchParams.get("videoViewCount"),
-              mylist: searchParams.get("videoMylistCount"),
-              like: searchParams.get("videoLikeCount"),
+      if (searchParams.has("videoType") || searchParams.has("videoId")){
+        if (!searchParams.has("videoType") || !searchParams.has("videoId")) {
+          setErrorMes("パラメーターが不適切です。再度やり直してください。");
+          return;
+        }
+        const videoQueryType = searchParams.get("videoType");
+        if (videoQueryType !== "normal" && videoQueryType !== "deleted") {
+          setErrorMes("パラメーターが不適切です。再度やり直してください。");
+          return;
+        }
+        try {
+          const res = await fetch("https://api.ncdo.net/v1/archive/add", {
+            method: "post",
+            mode: "cors",
+            body: JSON.stringify({
+              videoType: videoQueryType,
+              videoId: searchParams.get("videoId"),
+              videoTitle: searchParams.get("videoTitle"),
+              userId: searchParams.get("userId"),
+              count: {
+                view: searchParams.get("videoViewCount"),
+                mylist: searchParams.get("videoMylistCount"),
+                like: searchParams.get("videoLikeCount"),
+              },
+            }),
+            headers: {
+              "Content-Type": "application/json",
             },
-          }),
-        });
-        if (res.status !== 200) {
-          setErrorMes(
-            "サーバーでエラーが発生しました。時間を開けてやり直してください。"
-          );
+          });
+          const resJson = await res.json();
+          if (resJson.meta.status === 400) {
+            if (resJson.meta.errorMes === "ALREADY_EXIST") {
+              setErrorMes("すでに動画が存在しています。");
+            } else {
+              setErrorMes(
+                "サーバーでエラーが発生しました。時間を開けてやり直してください。"
+              );
+            }
+            return;
+          }
+          if (resJson.meta.status !== 202) {
+            setErrorMes(
+              "サーバーでエラーが発生しました。時間を開けてやり直してください。"
+            );
+            return;
+          }
+          navigater(`/video/${resJson.data.id}`);
+          return;
+        } catch (error) {
+          setErrorMes("エラーが発生しました。時間を開けてやり直してください。");
           return;
         }
-        const resJson = await res.json();
-        if (resJson.meta.status !== 200) {
-          setErrorMes(
-            "サーバーでエラーが発生しました。時間を開けてやり直してください。"
-          );
-          return;
-        }
-        navigater(`/reserve/${resJson.data.id}`);
-        return;
-      } catch (error) {
-        setErrorMes("エラーが発生しました。時間を開けてやり直してください。");
-        return;
       }
     })();
   }, [navigater, searchParams]);
