@@ -59,7 +59,7 @@ const ProgressListPage = () => {
   useEffect(() => {
     (async () => {
       const res = await fetch(
-        `https://api.ncdo.net/v1/archive/list?status=3&pageSize=10&page=1`
+        `https://api.ncdo.net/v1/archive/list?status=1&pageSize=10&page=1`
       );
       if (res.status === 200) {
         const resJson = await res.json();
