@@ -13,7 +13,7 @@ interface ListItem {
   };
   updatedAt: string | null;
   requestedAt: string;
-  status: 0 | 1 | 3;
+  status: 0 | 1 | 3 | 2;
 }
 
 interface ReserveData {

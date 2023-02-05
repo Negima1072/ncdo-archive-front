@@ -27,7 +27,7 @@ const App = () => {
           <Route path="/reserve" element={<ReserveListPage />} />
           <Route path="/stats" element={<ProgressListPage />} />
           <Route path="/add" element={<AddPage />} />
-          <Route path="/video/:videoId" element={<VideoDetailPage />} />
+          <Route path="/video/:progressId" element={<VideoDetailPage />} />
           <Route path="/*" element={<NotFount />} />
         </Route>
       </Routes>
