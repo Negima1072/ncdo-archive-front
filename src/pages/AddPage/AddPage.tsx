@@ -44,12 +44,27 @@ const AddPage = () => {
             body: JSON.stringify({
               videoType: videoQueryType,
               videoId: searchParams.get("videoId"),
-              videoTitle: searchParams.get("videoTitle"),
-              userId: searchParams.get("userId"),
+              videoTitle:
+                videoQueryType === "normal"
+                  ? searchParams.get("videoTitle")
+                  : null,
+              userId:
+                videoQueryType === "normal"
+                  ? Number(searchParams.get("userId"))
+                  : null,
               count: {
-                view: searchParams.get("videoViewCount"),
-                mylist: searchParams.get("videoMylistCount"),
-                like: searchParams.get("videoLikeCount"),
+                view:
+                  videoQueryType === "normal"
+                    ? Number(searchParams.get("videoViewCount"))
+                    : null,
+                mylist:
+                  videoQueryType === "normal"
+                    ? Number(searchParams.get("videoMylistCount"))
+                    : null,
+                like:
+                  videoQueryType === "normal"
+                    ? Number(searchParams.get("videoLikeCount"))
+                    : null,
               },
             }),
             headers: {
