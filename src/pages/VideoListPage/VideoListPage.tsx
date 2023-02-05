@@ -69,7 +69,7 @@ const VideoListPage = () => {
                 id: v.id,
                 title: v.videoTitle ?? v.videoId,
                 videoId: v.videoId,
-                commentNum: v.count.totalComment,
+                commentNum: v.count.nowComment,
                 updatedAt: v.updatedAt ?? "",
               };
             })
