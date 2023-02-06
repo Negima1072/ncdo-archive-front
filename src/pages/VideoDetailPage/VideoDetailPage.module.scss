@@ -27,3 +27,12 @@
     width: 49%;
   }
 }
+
+.metaTable{
+  font-size: 90%;
+  tbody {
+    th, td {
+      padding: 4px;
+    }
+  }
+}

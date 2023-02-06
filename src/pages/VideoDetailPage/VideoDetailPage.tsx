@@ -62,7 +62,7 @@ const VideoDetailPage = () => {
                 {progressInfo.videoTitle}
               </a>
             </iframe>
-            <Table striped bordered>
+            <Table striped bordered className={Styled.metaTable}>
               <tbody>
                 <tr>
                   <th>処理ID</th>
@@ -99,6 +99,10 @@ const VideoDetailPage = () => {
                 <tr>
                   <th>動画タイプ</th>
                   <td>{progressInfo.videoType}</td>
+                </tr>
+                <tr>
+                  <th>投稿日時</th>
+                  <td>{progressInfo.postedAt}</td>
                 </tr>
                 <tr>
                   <th>登録日時</th>

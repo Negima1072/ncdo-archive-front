@@ -14,6 +14,7 @@ interface ListItem {
   updatedAt: string | null;
   requestedAt: string;
   status: 0 | 1 | 3 | 2;
+  postedAt: string | null;
 }
 
 interface ReserveData {
