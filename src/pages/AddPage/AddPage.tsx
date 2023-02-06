@@ -45,24 +45,24 @@ const AddPage = () => {
               videoType: videoQueryType,
               videoId: searchParams.get("videoId"),
               videoTitle:
-                videoQueryType === "normal"
+                videoQueryType !== "normal"
                   ? searchParams.get("videoTitle")
                   : null,
               userId:
-                videoQueryType === "normal"
+                videoQueryType !== "normal"
                   ? Number(searchParams.get("userId"))
                   : null,
               count: {
                 view:
-                  videoQueryType === "normal"
+                  videoQueryType !== "normal"
                     ? Number(searchParams.get("videoViewCount"))
                     : null,
                 mylist:
-                  videoQueryType === "normal"
+                  videoQueryType !== "normal"
                     ? Number(searchParams.get("videoMylistCount"))
                     : null,
                 like:
-                  videoQueryType === "normal"
+                  videoQueryType !== "normal"
                     ? Number(searchParams.get("videoLikeCount"))
                     : null,
               },
