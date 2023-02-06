@@ -25,7 +25,5 @@
 .videoMeta, .videoComment {
   @media screen and ( min-width: 900px ) {
     width: 49%;
-    display: flex;
-    align-items: stretch;
   }
 }
