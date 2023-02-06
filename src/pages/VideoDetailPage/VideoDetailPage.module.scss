@@ -2,10 +2,26 @@
   width: 100%;
   overflow: hidden;
   height: 180px;
+  @media screen and ( min-width: 900px ) {
+    height: 200px;
+  }
 }
 
 .title {
   span {
     scale: 0.8;
+  }
+}
+
+.videoDetail{
+  @media screen and ( min-width: 900px ) {
+    display: flex;
+    gap: 2%;
+  }
+}
+
+.videoMeta, .videoComment {
+  @media screen and ( min-width: 900px ) {
+    width: 49%;
   }
 }

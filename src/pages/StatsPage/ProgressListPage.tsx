@@ -1,10 +1,3 @@
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
@@ -15,74 +8,55 @@ import {
   Table,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import Styled from "./ProgressListPage.module.scss";
 
-const COLUMNS: ColumnDef<ProgressData>[] = [
-  {
-    header: "#",
-    accessorKey: "id",
-  },
-  {
-    header: "動画名",
-    cell: (p) => {
-      return (
-        <Link to={`/video/${p.row.original.id}`}>{p.row.original.title}</Link>
-      );
-    },
-  },
-  {
-    header: "動画ID",
-    accessorKey: "videoId",
-  },
-  {
-    header: "コメント数",
-    accessorFn: (r) => {
-      return `${r.comment.now}/${r.comment.total}`;
-    },
-  },
-  {
-    header: "登録日時",
-    accessorKey: "requestedAt",
-  },
-];
-
 const ProgressListPage = () => {
-  const columns = useMemo(() => COLUMNS, []);
   const [videos, setVideos] = useState<ProgressData[]>([]);
   const [totalSize, setTotalSize] = useState<number>(0);
-  const table = useReactTable<ProgressData>({
-    data: videos,
-    columns: columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
+  const [page, setPage] = useState<number>(1);
+  const lastPage = useMemo(() => {
+    return Math.ceil(totalSize / 10);
+  }, [totalSize]);
+  const canNextPage = useMemo(() => {
+    return lastPage > page;
+  }, [lastPage, page]);
+  const canPreviousPage = useMemo(() => {
+    return 1 < page;
+  }, [page]);
   useEffect(() => {
     (async () => {
-      const res = await fetch(
-        `https://api.ncdo.net/v1/archive/list?status=1&pageSize=10&page=1`
-      );
-      if (res.status === 200) {
-        const resJson = await res.json();
-        if (resJson.meta.status === 200) {
-          setTotalSize(resJson.data.totalCount);
-          setVideos(
-            resJson.data.items.map((v: ListItem): ProgressData => {
-              return {
-                id: v.id,
-                title: v.videoTitle ?? v.videoId,
-                videoId: v.videoId,
-                requestedAt: v.requestedAt,
-                comment: {
-                  now: v.count.nowComment,
-                  total: v.count.totalComment,
-                },
-              };
-            })
-          );
+      try {
+        const res = await fetch(
+          `https://api.ncdo.net/v1/archive/list?status=1&pageSize=10&page=${page}`
+        );
+        if (res.status === 200) {
+          const resJson = await res.json();
+          if (resJson.meta.status === 200) {
+            setTotalSize(resJson.data.totalCount);
+            setVideos(
+              resJson.data.items.map((v: ListItem): ProgressData => {
+                return {
+                  id: v.id,
+                  title: v.videoTitle ?? v.videoId,
+                  videoId: v.videoId,
+                  requestedAt: v.requestedAt,
+                  comment: {
+                    now: v.count.nowComment,
+                    total: v.count.totalComment,
+                  },
+                };
+              })
+            );
+          }
         }
+      } catch (error) {
+        toast.error("エラーが発生しました", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
       }
     })();
-  }, []);
+  }, [page]);
   return (
     <>
       <h2>処理中一覧</h2>
@@ -98,38 +72,26 @@ const ProgressListPage = () => {
       <Container>
         <Table striped bordered className={Styled.videoTable}>
           <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th key={header.id} colSpan={header.colSpan}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
+            <th>#</th>
+            <th>動画名</th>
+            <th>動画ID</th>
+            <th>コメント数</th>
+            <th>登録日時</th>
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row) => {
-              return (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
+            {videos.map((v) => (
+              <tr key={v.id}>
+                <td>{v.id}</td>
+                <td>
+                  <Link to={`/video/${v.id}`}>{v.title}</Link>
+                </td>
+                <td>{v.id}</td>
+                <td>
+                  `${v.comment.now}/${v.comment.total}`
+                </td>
+                <td>{v.requestedAt}</td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </Container>
@@ -137,15 +99,15 @@ const ProgressListPage = () => {
         <ButtonGroup>
           <Button
             variant="dark"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => setPage(1)}
+            disabled={!canPreviousPage}
           >
             {"<<"}
           </Button>
           <Button
             variant="dark"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => setPage(page - 1)}
+            disabled={!canPreviousPage}
           >
             {"<"}
           </Button>
@@ -153,23 +115,23 @@ const ProgressListPage = () => {
         <div style={{ margin: "5px" }}>
           <span>Page</span>
           <strong>
-            {table.getState().pagination.pageIndex + 1}
+            {page}
             {" of "}
-            {table.getPageCount()}
+            {lastPage}
           </strong>
         </div>
         <ButtonGroup>
           <Button
             variant="dark"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => setPage(page + 1)}
+            disabled={!canNextPage}
           >
             {">"}
           </Button>
           <Button
             variant="dark"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
+            onClick={() => setPage(lastPage)}
+            disabled={!canNextPage}
           >
             {">>"}
           </Button>

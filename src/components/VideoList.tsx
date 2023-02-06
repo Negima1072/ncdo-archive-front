@@ -1,29 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const VideoList = () => {
   const [videos, setVideos] = useState<VideoData[]>([]);
   useEffect(() => {
     (async () => {
-      const res = await fetch(
-        `https://api.ncdo.net/v1/archive/list?status=3&pageSize=3&page=1&sortOrder=asc`
-      );
-      if (res.status === 200) {
-        const resJson = await res.json();
-        if (resJson.meta.status === 200) {
-          setVideos(
-            resJson.data.items.map((v: ListItem): VideoData => {
-              return {
-                id: v.id,
-                title: v.videoTitle ?? v.videoId,
-                videoId: v.videoId,
-                commentNum: v.count.nowComment,
-                updatedAt: v.updatedAt ?? "",
-              };
-            })
-          );
+      try {
+        const res = await fetch(
+          `https://api.ncdo.net/v1/archive/list?status=3&pageSize=3&page=1&sortOrder=asc`
+        );
+        if (res.status === 200) {
+          const resJson = await res.json();
+          if (resJson.meta.status === 200) {
+            setVideos(
+              resJson.data.items.map((v: ListItem): VideoData => {
+                return {
+                  id: v.id,
+                  title: v.videoTitle ?? v.videoId,
+                  videoId: v.videoId,
+                  commentNum: v.count.nowComment,
+                  updatedAt: v.updatedAt ?? "",
+                };
+              })
+            );
+          }
         }
+      } catch (error) {
+        toast.error("エラーが発生しました", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
       }
     })();
   }, []);

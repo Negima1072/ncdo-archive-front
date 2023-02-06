@@ -7,6 +7,8 @@ import AddPage from "pages/AddPage/AddPage";
 import ReserveListPage from "pages/ReserveListPage/ReserveListPage";
 import ProgressListPage from "pages/StatsPage/ProgressListPage";
 import VideoDetailPage from "pages/VideoDetailPage/VideoDetailPage";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const NotFount = () => {
   return (
@@ -19,19 +21,22 @@ const NotFount = () => {
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<MainPage />} />
-          <Route path="/list" element={<VideoListPage />} />
-          <Route path="/reserve" element={<ReserveListPage />} />
-          <Route path="/stats" element={<ProgressListPage />} />
-          <Route path="/add" element={<AddPage />} />
-          <Route path="/video/:progressId" element={<VideoDetailPage />} />
-          <Route path="/*" element={<NotFount />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<MainPage />} />
+            <Route path="/list" element={<VideoListPage />} />
+            <Route path="/reserve" element={<ReserveListPage />} />
+            <Route path="/stats" element={<ProgressListPage />} />
+            <Route path="/add" element={<AddPage />} />
+            <Route path="/video/:progressId" element={<VideoDetailPage />} />
+            <Route path="/*" element={<NotFount />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+      <ToastContainer theme="colored" />
+    </>
   );
 };
 

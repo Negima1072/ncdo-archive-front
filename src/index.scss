@@ -22,3 +22,10 @@ main {
     margin-right: 5%;
   }
 }
+
+main.videoDetail {
+  @media screen and ( min-width: 900px ) {
+    margin-left: 2% !important;
+    margin-right: 2% !important;
+  }
+}

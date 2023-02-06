@@ -41,3 +41,19 @@ interface ProgressData {
   };
   requestedAt: string;
 }
+
+interface CommentData {
+  videoId: string;
+  threadId: string;
+  no: number;
+  vpos: number;
+  date: number;
+  date_usec: number;
+  nicoru: number;
+  premium: boolean;
+  anonymity: boolean;
+  score: number;
+  user_id: string;
+  mail: string;
+  content: string;
+}
