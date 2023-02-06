@@ -9,7 +9,7 @@ const VideoList = () => {
     (async () => {
       try {
         const res = await fetch(
-          `https://api.ncdo.net/v1/archive/list?status=3&pageSize=3&page=1&sortOrder=asc`
+          `https://api.ncdo.net/v1/archive/list?status=3&pageSize=3&page=1&sortOrder=desc`
         );
         if (res.status === 200) {
           const resJson = await res.json();
